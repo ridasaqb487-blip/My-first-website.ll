@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Papa | Food & Grocery Delivery</title>
+    <style>
+        /* 
+           FONT & COLOR SYSTEM 
+           Theme: Foodpanda-inspired Pink (#D70F64)
+        */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #D70F64;
+            --primary-dark: #b00d52;
+            --primary-light: #fbe7ef;
+            --secondary: #333333;
+            --bg-gray: #f7f7f7;
+            --white: #ffffff;
+            --text-main: #333333;
+            --text-muted: #707070;
+            --border-color: #e8e8e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* UTILS */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .align-center { align-items: center; }
+        .flex-col { flex-direction: column; }
+        .hidden { display: none !important; }
+        .pointer { cursor: pointer; }
+
+        /* BUTTONS */
+        .btn {
+            padding: 10px 24px;
+            border-radius: 999px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--white);
+            height: 72px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .nav-link:hover { color: var(--primary); }
+
+        /* HERO SECTION */
+        .hero {
+            background-color: var(--primary);
+            padding: 60px 0;
+            color: var(--white);
+            text-align: center;
+            background-image: linear-gradient(rgba(215, 15, 100, 0.9), rgba(215, 15, 100, 0.9)), url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 30px auto 0;
+            background: var(--white);
+            padding: 8px;
+            border-radius: 999px;
+            display: flex;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 0 20px;
+            font-size: 16px;
+            border-radius: 999px;
+            outline: none;
+            color: var(--text-main);
+        }
+
+        /* CATEGORY FILTER */
+        .categories {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar { display: none; }
+
+        .category-pill {
+            padding: 8px 20px;
+            background: var(--white);
+            border-radius: 999px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .category-pill.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* SECTION TITLES */
+        .section-header {
+            margin: 40px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* GRID LAYOUTS */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-img {
+            height: 180px;
+            background: #eee;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .card-content { padding: 20px; }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .card-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .rating {
+            color: #f1c40f;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 700;
+        }
+
+        /* CART FLOATING ACTION */
+        .cart-sticky {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: var(--white);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(215, 15, 100, 0.4);
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ffc107;
+            color: #000;
+            font-size: 12px;
+            font-weight: 800;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* MODAL / VIEW SYSTEM */
+        .view {
+            padding-bottom: 100px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--radius-lg);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        /* ITEM LIST IN STORE */
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .menu-item {
+            display: flex;
+            padding: 16px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            gap: 16px;
+        }
+
+        .item-info { flex: 1; }
+        .item-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+        .item-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+        .item-price { font-weight: 800; color: var(--primary); }
+
+        .item-img {
+            width: 100px;
+            height: 100px;
+            background: #eee;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+        }
+
+        /* CART VIEW */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-gray);
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .qty-btn {
+            font-weight: 800;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        /* ADMIN TABS */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* FORMS */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus { border-color: var(--primary); }
+
+        /* SUCCESS MESSAGE */
+        .success-box {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .section-header h2 { font-size: 20px; }
+            .nav-links { display: none; }
+            .card-grid { grid-template-columns: 1fr; }
+            .modal-content { width: 95%; padding: 20px; }
+            .search-box { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="mainHeader">
+        <div class="container flex justify-between align-center">
+            <a href="#" class="logo" id="logoLink">Food Papa</a>
+            <div class="nav-links">
+                <a href="#" class="nav-link" id="navHome">Home</a>
+                <a href="#" class="nav-link" id="navRestaurants">Restaurants</a>
+                <a href="#" class="nav-link" id="navMarts">Marts</a>
+                <a href="#" class="nav-link" id="navOrders">Orders</a>
+                <a href="#" class="nav-link" id="navAdmin">Partner with us</a>
+            </div>
+            <button class="btn btn-outline btn-sm" id="btnBrowseMobile">Order Now</button>
+        </div>
+    </header>
+
+    <!-- VIEWS -->
+    <main id="app">
+        <!-- HOME VIEW -->
+        <div id="homeView" class="view">
+            <section class="hero">
+                <div class="container">
+                    <h1>It's the food you love, delivered</h1>
+                    <div class="search-box">
+                        <input type="text" id="mainSearch" placeholder="Enter your delivery address or search food...">
+                        <button class="btn btn-primary" id="btnSearch">Search</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="container">
+                <div class="categories" id="categoryList">
+                    <!-- Dynamic categories -->
+                </div>
+
+                <div class="section-header">
+                    <h2>Popular Restaurants in Multan</h2>
+                    <button class="btn btn-outline btn-sm" id="viewAllRestaurants">View All</button>
+                </div>
+                <div class="card-grid" id="restaurantGrid">
+                    <!-- Dynamic Restaurant Cards -->
+                </div>
+
+                <div class="section-header">
+                    <h2>Marts & Groceries</h2>
+                    <button class="btn btn-outline btn-sm" id="viewAllMarts">View All</button>
+                </div>
+                <div class="card-grid" id="martGrid">
+                    <!-- Dynamic Mart Cards -->
+                </div>
+            </div>
+        </div>
+
+        <!-- STORE DETAIL VIEW -->
+        <div id="storeDetailView" class="view hidden">
+            <div id="storeHero" class="hero" style="padding: 100px 0;">
+                <div class="container">
+                    <h1 id="storeHeroTitle">Store Name</h1>
+                    <p id="storeHeroMeta">Location • Delivery Info</p>
+                </div>
+            </div>
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="menuTitle">Menu Highlights</h2>
+                    <button class="btn btn-primary btn-sm" id="addMenuItemBtn">Add New Item</button>
+                </div>
+                <div class="item-list" id="menuGrid">
+                    <!-- Dynamic Menu Items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDERS VIEW -->
+        <div id="ordersView" class="view hidden">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Your Order History</h2>
+                </div>
+                <div id="ordersList" class="item-list">
+                    <!-- Dynamic Orders -->
+                </div>
+                <div id="emptyOrders" class="success-box hidden">
+                    <p>No orders placed yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN/PARTNER VIEW -->
+        <div id="adminView" class="view hidden">
+            <div class="container" style="padding-top: 40px;">
+                <div class="tabs">
+                    <div class="tab active" data-target="restaurantForm">Register Restaurant</div>
+                    <div class="tab" data-target="martForm">Register Mart</div>
+                    <div class="tab" data-target="manageStores">Manage My Stores</div>
+                </div>
+
+                <div id="restaurantForm" class="admin-tab-content">
+                    <form id="storeForm">
+                        <div class="form-group">
+                            <label>Restaurant Name</label>
+                            <input type="text" id="regName" placeholder="e.g. Multan Delights" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="regCategory">
+                                <option>Desi</option>
+                                <option>Fast Food</option>
+                                <option>Healthy</option>
+                                <option>Cakes & Bakery</option>
+                                <option>Pizza</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Location (Multan)</label>
+                            <input type="text" id="regLocation" placeholder="e.g. Gulgasht Colony" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Fee (PKR)</label>
+                            <input type="number" id="regDeliveryFee" value="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL (Optional)</label>
+                            <input type="text" id="regImage" placeholder="Leave blank for random pattern">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register Now</button>
+                    </form>
+                </div>
+
+                <div id="martForm" class="admin-tab-content hidden">
+                    <!-- Same structure for simplicity -->
+                </div>
+
+                <div id="manageStores" class="admin-tab-content hidden">
+                    <div class="card-grid" id="manageGrid">
+                        <!-- Stores with Delete buttons -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CART STICKY -->
+    <div id="cartToggle" class="cart-sticky">
+        <span class="cart-badge" id="cartCount">0</span>
+        🛒
+    </div>
+
+    <!-- MODALS -->
+    <!-- CART MODAL -->
+    <div id="cartModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Your Basket</h3>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div id="cartItemsList">
+                <!-- Dynamic cart items -->
+            </div>
+            <div id="emptyCartMsg" class="success-box hidden">
+                <p>Your basket is empty.</p>
+            </div>
+            <div id="cartSummary" class="margin-top-20">
+                <div class="flex justify-between" style="margin-top: 20px;">
+                    <span>Subtotal</span>
+                    <span id="subtotalPrice">Rs. 0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Delivery Fee</span>
+                    <span id="deliveryPrice">Rs. 0</span>
+                </div>
+                <hr style="margin: 15px 0; border: 1px solid var(--border-color);">
+                <div class="flex justify-between" style="font-weight: 800; font-size: 18px;">
+                    <span>Total (incl. VAT)</span>
+                    <span id="totalPrice">Rs. 0</span>
+                </div>
+                <button class="btn btn-primary w-full" style="width: 100%; margin-top: 20px;" id="goCheckout">Process Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Finalize Order</h3>
+                <span class="close-btn">&times;</span>
+            </div>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="chkName" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="chkPhone" placeholder="03XXXXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="chkAddress" rows="3" required></textarea>
+                </div>
+                <div style="background: var(--bg-gray); padding: 15px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+                    <p style="font-size: 14px; font-weight: 600;">Payment Method</p>
+                    <p style="font-size: 13px; color: var(--text-muted);">Cash on Delivery only (Available)</p>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="success-box">
+                <div class="success-icon">✓</div>
+                <h2>Order Placed!</h2>
+                <p style="color: var(--text-muted); margin-top: 10px;">Your food is being prepared. View your order details in your history.</p>
+                <button class="btn btn-primary" style="margin-top: 30px;" id="successClose">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD ITEM MODAL -->
+    <div id="addItemModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Menu Item</h3>
+                <span class="close-btn">&times;</span>
+            </div>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="itemDesc" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Price (PKR)</label>
+                    <input type="number" id="itemPrice" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-full" style="width: 100%;">Save Item</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * FOOD PAPA - CORE LOGIC
+         */
+
+        // --- STATE MANAGEMENT ---
+        let state = {
+            restaurants: [],
+            marts: [],
+            cart: [],
+            orders: [],
+            currentStoreId: null,
+            currentView: 'home'
+        };
+
+        const STORAGE_KEY = 'foodpapa_data';
+
+        // --- SAMPLE DATA ---
+        const DEFAULT_RESTAURANTS = [
+            { id: 'r1', type: 'restaurant', name: 'Multan Cuisine', category: 'Desi', location: 'Bosan Road', rating: 4.8, time: '25 min', minOrder: 300, deliveryFee: 49, image: 'https://images.unsplash.com/photo-1589187151003-0dd471acfb9b?auto=format&fit=crop&w=800&q=80', items: [
+                { id: 'ri1', name: 'Mutton Karahi', price: 1850, desc: 'Full karahi with butter and organic spices' },
+                { id: 'ri2', name: 'Garlic Naan', price: 60, desc: 'Fresh tandoori naan with garlic' }
+            ]},
+            { id: 'r2', type: 'restaurant', name: 'Pizza Hut Multan', category: 'Pizza', location: 'Cantonment', rating: 4.5, time: '30 min', minOrder: 500, deliveryFee: 99, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80', items: [
+                { id: 'ri3', name: 'Double Cheese Pizza', price: 1200, desc: 'Extra cheese, extra fun. Large size.' }
+            ]},
+            { id: 'r3', type: 'restaurant', name: 'Shah Jahan', category: 'Desi', location: 'Mall Plaza', rating: 4.7, time: '35 min', minOrder: 250, deliveryFee: 60, image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=800&q=80', items: []},
+            { id: 'r4', type: 'restaurant', name: 'Subway Multan', category: 'Healthy', location: 'Gulgasht', rating: 4.3, time: '20 min', minOrder: 200, deliveryFee: 35, image: 'https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?auto=format&fit=crop&w=800&q=80', items: []},
+            { id: 'r5', type: 'restaurant', name: 'Karachi Biryani', category: 'Desi', location: 'Chowk Shaheedan', rating: 4.6, time: '15 min', minOrder: 150, deliveryFee: 20, image: 'https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?auto=format&fit=crop&w=800&q=80', items: []}
+        ];
+
+        const DEFAULT_MARTS = [
+            { id: 'm1', type: 'mart', name: 'Save Mart', category: 'Groceries', location: 'Gulgasht', rating: 4.5, time: '40 min', minOrder: 500, deliveryFee: 80, image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80', items: [
+                { id: 'mi1', name: 'Olpers Milk (1L)', price: 290, desc: 'Full cream milk' },
+                { id: 'mi2', name: 'Bread Family Pack', price: 160, desc: 'Fresh morning bread' }
+            ]},
+            { id: 'm2', type: 'mart', name: 'Metro Multan', category: 'Groceries', location: 'Industrial Estate', rating: 4.8, time: '60 min', minOrder: 1000, deliveryFee: 150, image: 'https://images.unsplash.com/photo-1604719312563-8912e9223c6a?auto=format&fit=crop&w=800&q=80', items: []},
+            { id: 'm3', type: 'mart', name: 'Al-Fatah', category: 'Premium', location: 'Cantt', rating: 4.9, time: '45 min', minOrder: 800, deliveryFee: 120, image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=800&q=80', items: []},
+            { id: 'm4', type: 'mart', name: 'Imtiaz Super Market', category: 'Groceries', location: 'Vehari Road', rating: 4.6, time: '50 min', minOrder: 400, deliveryFee: 70, image: 'https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=800&q=80', items: []},
+            { id: 'm5', type: 'mart', name: 'Chase Up', category: 'Discount', location: 'BCG Chowk', rating: 4.2, time: '55 min', minOrder: 300, deliveryFee: 50, image: 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?auto=format&fit=crop&w=800&q=80', items: []}
+        ];
+
+        // --- INIT DATA ---
+        function init() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                state.restaurants = parsed.restaurants || [];
+                state.marts = parsed.marts || [];
+                state.orders = parsed.orders || [];
+            } else {
+                state.restaurants = DEFAULT_RESTAURANTS;
+                state.marts = DEFAULT_MARTS;
+                saveData();
+            }
+            renderHome();
+            updateCartUI();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                restaurants: state.restaurants,
+                marts: state.marts,
+                orders: state.orders
+            }));
+        }
+
+        // --- ROUTING ---
+        function switchView(viewName) {
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            document.getElementById(viewName + 'View').classList.remove('hidden');
+            state.currentView = viewName;
+            window.scrollTo(0, 0);
+        }
+
+        // --- RENDERERS ---
+        function renderHome(filterCat = 'All') {
+            const resGrid = document.getElementById('restaurantGrid');
+            const martGrid = document.getElementById('martGrid');
+            const catList = document.getElementById('categoryList');
+
+            // Render Categories
+            const cats = ['All', 'Desi', 'Fast Food', 'Healthy', 'Groceries', 'Pizza', 'Cakes & Bakery'];
+            catList.innerHTML = cats.map(c => `
+                <div class="category-pill ${c === filterCat ? 'active' : ''}" onclick="renderHome('${c}')">${c}</div>
+            `).join('');
+
+            // Filter data
+            const filteredRes = filterCat === 'All' ? state.restaurants : state.restaurants.filter(r => r.category === filterCat);
+            const filteredMarts = filterCat === 'All' || filterCat === 'Groceries' ? state.marts : [];
+
+            resGrid.innerHTML = filteredRes.map(r => createCard(r)).join('') || '<p>No restaurants found in this category.</p>';
+            martGrid.innerHTML = filteredMarts.map(m => createCard(m)).join('') || '<p>No marts found.</p>';
+        }
+
+        function createCard(item) {
+            return `
+                <div class="card pointer" onclick="openStore('${item.id}')">
+                    <div class="card-img" style="background-image: url('${item.image || 'https://via.placeholder.com/400?text=Food+Papa'}')">
+                        <div class="card-badge">${item.time}</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${item.name}</div>
+                        <div class="card-meta">
+                            <span class="rating">⭐ ${item.rating}</span>
+                            <span>${item.category}</span>
+                        </div>
+                        <div class="card-meta">
+                            <span>Rel. Fee: Rs. ${item.deliveryFee}</span>
+                            <span>Min: Rs. ${item.minOrder}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openStore(id) {
+            const store = [...state.restaurants, ...state.marts].find(s => s.id === id);
+            if (!store) return;
+
+            state.currentStoreId = id;
+            document.getElementById('storeHeroTitle').innerText = store.name;
+            document.getElementById('storeHeroMeta').innerText = `${store.category} • ${store.location} • Rs. ${store.deliveryFee} Delivery`;
+            document.getElementById('storeHero').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${store.image}')`;
+
+            renderMenu(store);
+            switchView('storeDetail');
+        }
+
+        function renderMenu(store) {
+            const menuGrid = document.getElementById('menuGrid');
+            if (!store.items || store.items.length === 0) {
+                menuGrid.innerHTML = '<div class="success-box"><p>No items added yet. Click "Add New Item" to start.</p></div>';
+            } else {
+                menuGrid.innerHTML = store.items.map(item => `
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-desc">${item.desc}</div>
+                            <div class="item-price">Rs. ${item.price}</div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="addToCart('${item.id}', '${item.name}', ${item.price})">+ Add</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // --- CART LOGIC ---
+        function addToCart(itemId, name, price) {
+            const store = [...state.restaurants, ...state.marts].find(s => s.id === state.currentStoreId);
+            
+            // Check if cart has items from another store
+            if (state.cart.length > 0 && state.cart[0].storeId !== state.currentStoreId) {
+                if (confirm('Adding items from a new store will clear your current basket. Continue?')) {
+                    state.cart = [];
+                } else return;
+            }
+
+            const existing = state.cart.find(i => i.id === itemId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                state.cart.push({ id: itemId, name, price, qty: 1, storeId: state.currentStoreId, storeName: store.name, deliveryFee: store.deliveryFee });
+            }
+            
+            updateCartUI();
+            
+            // Pulse the cart icon
+            const cartToggle = document.getElementById('cartToggle');
+            cartToggle.style.transform = 'scale(1.2)';
+            setTimeout(() => { cartToggle.style.transform = 'scale(1)'; }, 200);
+        }
+
+        function updateCartUI() {
+            const count = state.cart.reduce((acc, curr) => acc + curr.qty, 0);
+            document.getElementById('cartCount').innerText = count;
+            
+            const list = document.getElementById('cartItemsList');
+            const summary = document.getElementById('cartSummary');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+
+            if (state.cart.length === 0) {
+                list.innerHTML = '';
+                summary.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+            } else {
+                summary.classList.remove('hidden');
+                emptyMsg.classList.add('hidden');
+                
+                list.innerHTML = state.cart.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">Rs. ${item.price}</div>
+                        </div>
+                        <div class="qty-controls">
+                            <div class="qty-btn" onclick="adjustQty('${item.id}', -1)">-</div>
+                            <span>${item.qty}</span>
+                            <div class="qty-btn" onclick="adjustQty('${item.id}', 1)">+</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                const subtotal = state.cart.reduce((aa, cc) => aa + (cc.price * cc.qty), 0);
+                const delivery = state.cart[0].deliveryFee;
+                const total = subtotal + delivery;
+
+                document.getElementById('subtotalPrice').innerText = `Rs. ${subtotal}`;
+                document.getElementById('deliveryPrice').innerText = `Rs. ${delivery}`;
+                document.getElementById('totalPrice').innerText = `Rs. ${total}`;
+            }
+        }
+
+        function adjustQty(id, delta) {
+            const item = state.cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    state.cart = state.cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        // --- ORDER LOGIC ---
+        function placeOrder() {
+            const name = document.getElementById('chkName').value;
+            const phone = document.getElementById('chkPhone').value;
+            const address = document.getElementById('chkAddress').value;
+
+            const order = {
+                id: 'ord_' + Date.now(),
+                items: [...state.cart],
+                customer: { name, phone, address },
+                total: state.cart.reduce((a, b) => a + (b.price * b.qty), 0) + state.cart[0].deliveryFee,
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+                storeName: state.cart[0].storeName
+            };
+
+            state.orders.unshift(order); // Newest first
+            saveData();
+            
+            // UI Update
+            state.cart = [];
+            updateCartUI();
+            document.getElementById('checkoutModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function renderOrders() {
+            const list = document.getElementById('ordersList');
+            const empty = document.getElementById('emptyOrders');
+
+            if (state.orders.length === 0) {
+                list.innerHTML = '';
+                empty.classList.remove('hidden');
+            } else {
+                empty.classList.add('hidden');
+                list.innerHTML = state.orders.map(o => `
+                    <div class="card" style="padding: 20px; margin-bottom: 16px;">
+                        <div class="flex justify-between align-center">
+                            <div>
+                                <h3 style="color: var(--primary);">${o.storeName}</h3>
+                                <p style="font-size: 12px; color: var(--text-muted);">${o.date}</p>
+                            </div>
+                            <div style="font-weight: 800; font-size: 18px;">Rs. ${o.total}</div>
+                        </div>
+                        <div style="margin-top: 15px; font-size: 13px;">
+                            ${o.items.map(i => `• ${i.name} x ${i.qty}`).join('<br>')}
+                        </div>
+                        <div style="margin-top: 10px; font-style: italic; color: var(--text-muted); font-size: 12px;">
+                            Deliver to: ${o.customer.address}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // --- ADMIN ACTIONS ---
+        function registerStore(isMart) {
+            const name = document.getElementById('regName').value;
+            const category = document.getElementById('regCategory').value;
+            const location = document.getElementById('regLocation').value;
+            const deliveryFee = parseInt(document.getElementById('regDeliveryFee').value);
+            const image = document.getElementById('regImage').value || `https://picsum.photos/seed/${name}/800/600`;
+
+            const newStore = {
+                id: 's_' + Date.now(),
+                type: isMart ? 'mart' : 'restaurant',
+                name, category, location, rating: 5.0, time: '30-40 min', minOrder: 200, deliveryFee, image,
+                items: []
+            };
+
+            if (isMart) state.marts.push(newStore);
+            else state.restaurants.push(newStore);
+
+            saveData();
+            renderHome();
+            alert('Registered successfully!');
+            switchView('home');
+        }
+
+        function deleteStore(id) {
+            if (confirm('Delete this store permanently?')) {
+                state.restaurants = state.restaurants.filter(r => r.id !== id);
+                state.marts = state.marts.filter(m => m.id !== id);
+                saveData();
+                renderManageGrid();
+                renderHome();
+            }
+        }
+
+        function renderManageGrid() {
+            const grid = document.getElementById('manageGrid');
+            const all = [...state.restaurants, ...state.marts];
+            grid.innerHTML = all.map(s => `
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-title">${s.name}</div>
+                        <p style="font-size: 12px; margin-bottom: 12px;">${s.type.toUpperCase()} • ${s.location}</p>
+                        <button class="btn btn-outline btn-sm" onclick="deleteStore('${s.id}')">Delete Store</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- EVENT LISTENERS & UI GLUE ---
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+
+            // Nav Clicks
+            document.getElementById('logoLink').onclick = (e) => { e.preventDefault(); switchView('home'); };
+            document.getElementById('navHome').onclick = (e) => { e.preventDefault(); switchView('home'); };
+            document.getElementById('navRestaurants').onclick = (e) => { e.preventDefault(); switchView('home'); renderHome('All'); };
+            document.getElementById('navMarts').onclick = (e) => { e.preventDefault(); switchView('home'); renderHome('Groceries'); };
+            document.getElementById('navOrders').onclick = (e) => { e.preventDefault(); renderOrders(); switchView('orders'); };
+            document.getElementById('navAdmin').onclick = (e) => { e.preventDefault(); switchView('admin'); renderManageGrid(); };
+
+            // Modal Toggles
+            document.getElementById('cartToggle').onclick = () => document.getElementById('cartModal').classList.remove('hidden');
+            document.querySelectorAll('.close-btn').forEach(b => {
+                b.onclick = () => b.closest('.modal').classList.add('hidden');
+            });
+
+            // Checkout flow
+            document.getElementById('goCheckout').onclick = () => {
+                document.getElementById('cartModal').classList.add('hidden');
+                document.getElementById('checkoutModal').classList.remove('hidden');
+            };
+
+            document.getElementById('checkoutForm').onsubmit = (e) => {
+                e.preventDefault();
+                placeOrder();
+            };
+
+            document.getElementById('successClose').onclick = () => {
+                document.getElementById('successModal').classList.add('hidden');
+                switchView('home');
+            };
+
+            // Register store
+            document.getElementById('storeForm').onsubmit = (e) => {
+                e.preventDefault();
+                registerStore(false);
+            };
+
+            // Add Menu Item
+            document.getElementById('addMenuItemBtn').onclick = () => document.getElementById('addItemModal').classList.remove('hidden');
+            document.getElementById('itemForm').onsubmit = (e) => {
+                e.preventDefault();
+                const store = [...state.restaurants, ...state.marts].find(s => s.id === state.currentStoreId);
+                const newItem = {
+                    id: 'it_' + Date.now(),
+                    name: document.getElementById('itemName').value,
+                    desc: document.getElementById('itemDesc').value,
+                    price: parseInt(document.getElementById('itemPrice').value)
+                };
+                store.items.push(newItem);
+                saveData();
+                renderMenu(store);
+                document.getElementById('addItemModal').classList.add('hidden');
+                document.getElementById('itemForm').reset();
+            };
+
+            // Tabs in Admin
+            document.querySelectorAll('.tab').forEach(t => {
+                t.onclick = () => {
+                    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+                    document.querySelectorAll('.admin-tab-content').forEach(x => x.classList.add('hidden'));
+                    t.classList.add('active');
+                    document.getElementById(t.dataset.target).classList.remove('hidden');
+                    if (t.dataset.target === 'manageStores') renderManageGrid();
+                };
+            });
+
+            // Search Filter
+            document.getElementById('btnSearch').onclick = () => {
+                const query = document.getElementById('mainSearch').value.toLowerCase();
+                const filteredRes = state.restaurants.filter(r => r.name.toLowerCase().includes(query) || r.category.toLowerCase().includes(query));
+                const filteredMarts = state.marts.filter(m => m.name.toLowerCase().includes(query));
+                
+                document.getElementById('restaurantGrid').innerHTML = filteredRes.map(r => createCard(r)).join('') || '<p>No matching restaurants.</p>';
+                document.getElementById('martGrid').innerHTML = filteredMarts.map(m => createCard(m)).join('') || '<p>No matching marts.</p>';
+                window.scrollTo(0, 500);
+            };
+        });
+    </script>
+</body>
+</html>
